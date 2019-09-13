@@ -40,31 +40,13 @@ def show_results ( qdf , sort_on , show_info=['description'] , nitems=15 ) :
 
 
 #examples
-def run_MS():
-    analyte_df =                 pd.read_csv ( './data/fine_MS.csv'  , '\t' , index_col=0 ).apply(lambda x:np.log2(x+1.))
-    journal_df = prune_journal ( pd.read_csv ( './data/coarse_MS.csv', '\t' , index_col=0 ) )
-    journal_df = journal_df .loc[ :,analyte_df.columns.values ].copy( )
-    #
-    # ONLY KEEP WELL DETERMINED CASES 
-    bSel = [ not ('ND' in stat ) for ( stat ) in journal_df.loc['StatusLabel'] ]
-    test = 'C(Status)'
-    #
-    adf = drop_duplicate_indices( analyte_df.iloc[:,bSel].copy() )
-    jdf = journal_df.iloc[:,bSel].copy()
-    #
-    # CONDUCT THE RIGHTEOUS QUANTIFICATION
-    qdf = quantify ( adf , jdf , 
-                     'anova ~' + test , './data/vanilla_reactome.gmt' ,
-                      test_type = 'random' )
-    show_results( qdf,sort_on=['C(Status),q'],show_info=['description','C(Status),p'] )
-    return ( qdf )
 
 def run_tcga_brca():
     #
     # READ THE TCGA DATA
     results = []
-    analyte_df =                pd.read_csv( './data/fine_pruned_TCGABRCA.csv'  , '\t' , index_col=0 )
-    journal_df = prune_journal( pd.read_csv( './data/coarse_pruned_TCGABRCA.csv', '\t' , index_col=0 ) )
+    analyte_df =                pd.read_csv( './data/analyte_TCGABRCA.csv', '\t' , index_col=0 )
+    journal_df = prune_journal( pd.read_csv( './data/journal_TCGABRCA.csv', '\t' , index_col=0 ) )
     journal_df = journal_df .loc[ :,analyte_df.columns.values ].copy()
     #
     # ONLY KEEP WELL DETERMINED CASES
@@ -123,16 +105,36 @@ def run_tcga_brca():
 
 def run_CLL():
     #
-    analyte_df =                pd.read_csv('./data/analyte_MOFACLL.csv', '\t' , index_col=0 ).apply(lambda x:np.log2(x+1.) )
+    analyte_df =                pd.read_csv('./data/analyte_MOFACLL.csv', '\t' , index_col=0 )
     journal_df = prune_journal( pd.read_csv('./data/journal_MOFACLL.csv', '\t' , index_col=0 ) )
-    journal_df = journal_df.iloc[:,analyte_df.columns.values].copy()
+    journal_df = journal_df.loc[:,analyte_df.columns.values].copy()
     #
-    test = 'Ibrutinib4' # 'C(Status)'
+    test = 'Ibrutinib4'
     qdf = quantify ( analyte_df , journal_df , 'anova~'+test ,
                          'data/vanilla_reactome.gmt',
                          test_type='random' )
     qdf.sort_values(test+',q').to_csv('./cll_ighv_results.tsv','\t')
     return(qdf)
+
+
+def run_MS():
+    analyte_df =                 pd.read_csv ( './data/analyte_MS.csv'  , '\t' , index_col=0 )
+    journal_df = prune_journal ( pd.read_csv ( './data/journal_MS.csv', '\t' , index_col=0 ) )
+    journal_df = journal_df .loc[ :,analyte_df.columns.values ].copy( )
+    #
+    # ONLY KEEP WELL DETERMINED CASES
+    bSel = [ not ('ND' in stat ) for ( stat ) in journal_df.loc['StatusLabel'] ]
+    test = 'C(Status)'
+    #
+    adf = drop_duplicate_indices( analyte_df.iloc[:,bSel].copy() )
+    jdf = journal_df.iloc[:,bSel].copy()
+    #
+    # CONDUCT THE RIGHTEOUS QUANTIFICATION
+    qdf = quantify ( adf , jdf ,
+                     'anova ~' + test , './data/vanilla_reactome.gmt' ,
+                      test_type = 'random' )
+    show_results( qdf,sort_on=['C(Status),q'],show_info=['description','C(Status),p'] )
+    return ( qdf )
 
 
 if __name__ == '__main__' :

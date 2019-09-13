@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name = "righteous-fa",
-    version = "1.0.0",
+    version = "1.1.0",
     author = "Richard Tjörnhammar",
     author_email = "richard.tjornhammar@gmail.com",
     description = "Righteous Pathway Factor Analysis",

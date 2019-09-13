@@ -22,3 +22,9 @@ https://zenodo.org/record/3406460
 
 Install with :
 pip install righteous-fa
+
+Examples can be run by issuing:
+
+>>> from righteous.examples import *
+>>> run_MS()
+
