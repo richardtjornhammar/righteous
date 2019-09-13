@@ -16,22 +16,24 @@ limitations under the License.
 import numpy as np
 import pandas as pd
 
-def qvalues( pvalues, pi0=1 ):
+def qvalues( pvalues, pi0=None ):
     m = float(len(pvalues))
     assert(m>0)
     pvalues.sort()
+    if pi0 is None:
+        pi0 = 1. 
     num_p, p_sum, qs = 0, 0.0, []
-    for p in pvalues:
+    for p,coord,coord2 in pvalues:
         num_p += 1
         p_sum += p
         q = pi0*p*(m/float(num_p))
-        qs.append((q,p))
+        qs.append((q,p,coord,coord2))
     qs.reverse()
     old_q = 1.0
     for ix in range(len(qs)):
         q = min(old_q,qs[ix][0])
-        old_q  = q
-        qs[ix] = (q,qs[ix][1])
+        old_q = q
+        qs[ix] = (q,qs[ix][1],qs[ix][2],qs[ix][3])
     qs.reverse()
     return qs
 
@@ -128,8 +130,10 @@ def quantify ( analyte_df , journal_df , formula , grouping_file , synonyms = No
     edf = eval_df.T
     for col in eval_df.columns :
         if ',p' in col :
-            q = [q_[0] for q_ in qvalues(eval_df.loc[:,col].values)]; l=col.split(',')[0]+',q'
-            edf.loc[l] = q
+            pvals = [ (p,pidx,'') for (p,pidx) in zip( eval_df.loc[:,col].values,eval_df.index.values ) ]
+            q_d = { q_[2]:q_[0] for q_ in qvalues( pvals ) }
+            l = col.split(',')[0]+',q'
+            edf.loc[l] = [q_d[idx] for idx in eval_df.index.values ]
     return ( edf.T )
 
 def add_spearmanr( analyte_results_df, journal_df, what='M') :
