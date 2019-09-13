@@ -11,6 +11,14 @@ positioned on the columns.
 
 Visit the active code via :
 https://github.com/richardtjornhammar/righteous
+https://pypi.org/project/righteous-fa/
+https://zenodo.org/record/3373405
+
+Download the data used in the examples from:
+https://zenodo.org/record/3407557
+
+That can be recreated by using the scripts and instructions in:
+https://zenodo.org/record/3406460
 
 Install with :
 pip install righteous-fa
