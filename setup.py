@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name = "righteous-fa",
-    version = "1.1.0",
+    version = "1.2.0",
     author = "Richard Tjörnhammar",
     author_email = "richard.tjornhammar@gmail.com",
     description = "Righteous Pathway Factor Analysis",
@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type = "text/markdown",
     url = "https://github.com/richardtjornhammar/impetuous",
     packages = setuptools.find_packages('src'),
-    package_dir = {'righteous':'src/righteous','quantification':'src/quantification','convert':'src/convert','pathways':'src/pathways','examples':'src/examples'},
+    package_dir = {'righteous':'src/righteous','quantification':'src/quantification','convert':'src/convert','examples':'src/examples'},
     classifiers = [
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: Apache Software License",
