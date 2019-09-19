@@ -12,7 +12,7 @@ positioned on the columns.
 Visit the active code via :
 https://github.com/richardtjornhammar/righteous
 https://pypi.org/project/righteous-fa/
-https://zenodo.org/record/3373405
+https://zenodo.org/record/3445967 with doi: 10.5281/zenodo.3445967 
 
 Download the data used in the examples from:
 https://zenodo.org/record/3407557
@@ -25,6 +25,6 @@ pip install righteous-fa
 
 Examples can be run by issuing:
 
->>> from righteous.examples import *
->>> run_MS()
+: from righteous.examples import *
+: run_MS()
 
