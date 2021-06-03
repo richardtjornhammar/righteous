@@ -1,5 +1,5 @@
 """
-Copyright 2019 RICHARD TJÖRNHAMMAR
+Copyright 2021 RICHARD TJÖRNHAMMAR
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ def qvalues( pvalues, pi0=None ):
     assert(m>0)
     pvalues.sort()
     if pi0 is None:
-        pi0 = 1. 
+        pi0 = 1.
     num_p, p_sum, qs = 0, 0.0, []
     for p,coord,coord2 in pvalues:
         num_p += 1
@@ -93,9 +93,11 @@ class RCA( object ) :
 
 def quantify ( analyte_df , journal_df , formula , grouping_file , synonyms = None ,
                 delimiter = '\t' , test_type = 'random' ,
-                split_id = None , skip_line_char = '#' 
+                split_id = None , skip_line_char = '#'
               ) :
-    dimred = RCA()
+    from sklearn.decomposition import PCA
+    dimred = PCA()
+
     statistical_formula = formula
     if not split_id is None :
         nidx = [ idx.split(split_id)[-1].replace(' ','') for idx in analyte_df.index.values ]
